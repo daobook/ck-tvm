@@ -85,8 +85,6 @@ def setup(i):
 
     hft=i.get('features',{}) # host platform features
     habi=hft.get('os',{}).get('abi','') # host ABI (only for ARM-based); if you want to get target ABI, use tosd ...
-                                        # armv7l, etc...
-
     p=i['path']
 
     env=i['env']
@@ -97,8 +95,6 @@ def setup(i):
 
     cus=i['customize']
     ie=cus.get('install_env',{})
-    nie={} # new env
-
     cmake={'USE_RPC':'ON',
            'USE_SORT':'ON',
            'USE_GRAPH_RUNTIME':'ON',
@@ -134,14 +130,9 @@ def setup(i):
 
     tmp_file_name=r['file_name']
 
-    nie['TMP_TVM_CMAKE_UPDATE_FILE']=tmp_file_name
-
+    nie = {'TMP_TVM_CMAKE_UPDATE_FILE': tmp_file_name}
     # Save JSON to tmp file (will be picked up by install.sh and recored to INSTALL dir)
-    s=''
-    for k in cmake:
-        v=cmake[k]
-        s+='set('+k+' '+v+')\n'
-
+    s = ''.join(f'set({k} {v}' + ')\n' for k, v in cmake.items())
     r=ck.save_text_file({'text_file':tmp_file_name, 'string':s})
     if r['return']>0: return r
 

@@ -69,7 +69,6 @@ def setup(i):
 
     env=i['env']
     ep=cus['env_prefix']
-
 #    p1=os.path.dirname(fp)
     pl=os.path.dirname(fp)
     pi=os.path.dirname(pl)
@@ -78,9 +77,9 @@ def setup(i):
     ptopi=os.path.join(pi,'topi','python')
 
     env[ep]=pi
-    env[ep+'_LIB']=pl
-    env[ep+'_PYTHON_LIB']=ptvm
-    env[ep+'_PYTHON_TOPI_LIB']=ptopi
+    env[f'{ep}_LIB'] = pl
+    env[f'{ep}_PYTHON_LIB'] = ptvm
+    env[f'{ep}_PYTHON_TOPI_LIB'] = ptopi
 
     cus['path_lib']=pl
 

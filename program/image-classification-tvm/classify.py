@@ -25,12 +25,13 @@ def transform_image(image):
 
 # returns list of pairs (prob, class_index)
 def get_top5(all_probs):
-  probs_with_classes = []
-  for class_index in range(len(all_probs)):
-    prob = all_probs[class_index]
-    probs_with_classes.append((prob, class_index))
-  sorted_probs = sorted(probs_with_classes, key = lambda pair: pair[0], reverse=True)
-  return sorted_probs[0:5]
+    probs_with_classes = [
+        (all_probs[class_index], class_index)
+        for class_index in range(len(all_probs))
+    ]
+
+    sorted_probs = sorted(probs_with_classes, key = lambda pair: pair[0], reverse=True)
+    return sorted_probs[:5]
 
 def run_case(dtype, image, target):
     # Check image

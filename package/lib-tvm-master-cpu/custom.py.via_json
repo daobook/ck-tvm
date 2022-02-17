@@ -85,8 +85,6 @@ def setup(i):
 
     hft=i.get('features',{}) # host platform features
     habi=hft.get('os',{}).get('abi','') # host ABI (only for ARM-based); if you want to get target ABI, use tosd ...
-                                        # armv7l, etc...
-
     p=i['path']
 
     env=i['env']
@@ -97,8 +95,6 @@ def setup(i):
 
     cus=i['customize']
     ie=cus.get('install_env',{})
-    nie={} # new env
-
     rep={} # Prepare replacements
 
     # Check if LLVM is used and set CK_LLVM_CONFIG
@@ -108,11 +104,11 @@ def setup(i):
        env1=deps.get('llvm-compiler',{}).get('dict',{}).get('env',{})
        p1=env1.get('CK_ENV_COMPILER_LLVM_BIN','')
     if p1!='':
-       p2=env1['CK_LLVM_CONFIG']
+        p2=env1['CK_LLVM_CONFIG']
 
-       llvm_config=os.path.join(p1,p2)
+        llvm_config=os.path.join(p1,p2)
 
-       rep['USE_LLVM OFF']='USE_LLVM '+llvm_config
+        rep['USE_LLVM OFF'] = f'USE_LLVM {llvm_config}'
 
     # Check OpenCL
     if ie.get('USE_OPENCL','').lower()=='on':
@@ -128,8 +124,7 @@ def setup(i):
 
     tmp_file_name=r['file_name']
 
-    nie['TMP_TVM_CMAKE_UPDATE_FILE']=tmp_file_name
-
+    nie = {'TMP_TVM_CMAKE_UPDATE_FILE': tmp_file_name}
     # Save JSON to tmp file (will be picked up by install.sh and recored to INSTALL dir)
     r=ck.save_json_to_file({'json_file':tmp_file_name, 'dict':rep})
     if r['return']>0: return r
